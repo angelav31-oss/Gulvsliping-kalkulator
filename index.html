@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gulvsliping – Profesjonell tilbudskalkulator</title>
+<style>
+:root{--bg:#f3f5f7;--card:#fff;--text:#17212b;--muted:#667085;--line:#dfe4ea;--accent:#1f5f4a;--accent2:#173f33;--soft:#edf5f1;--danger:#b42318;--warn:#b54708;--ok:#067647;--shadow:0 10px 28px rgba(16,24,40,.07)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1220px;margin:auto;padding:22px}.hero{background:linear-gradient(135deg,#18392f,#245e4b);color:#fff;padding:28px;border-radius:18px;box-shadow:var(--shadow);margin-bottom:18px}.hero h1{margin:0 0 8px;font-size:30px}.hero p{margin:0;opacity:.92;max-width:900px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:20px}.step{padding:11px 8px;border-radius:11px;background:rgba(255,255,255,.12);text-align:center;font-weight:800;font-size:13px}.step.active{background:#fff;color:var(--accent2)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}.section{display:none}.section.active{display:block}
+h2{font-size:21px;margin:0 0 6px}h3{font-size:16px;margin:18px 0 10px}.lead{color:var(--muted);margin:0 0 18px;font-size:14px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}.req:after{content:' *';color:var(--danger)}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #cfd6dd;border-radius:10px;background:#fff;color:var(--text);font-size:14px}textarea{min-height:86px;resize:vertical}input:focus,select:focus,textarea:focus{outline:2px solid rgba(31,95,74,.16);border-color:var(--accent)}
+.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px}.check{display:flex;align-items:flex-start;gap:9px;padding:7px 0}.check input{width:auto;margin-top:2px}.check label{font-weight:500;margin:0}.help{color:var(--muted);font-size:12px}.divider{height:1px;background:var(--line);margin:18px 0}.notice{padding:12px;border-radius:10px;font-size:13px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}.okbox{padding:12px;border-radius:10px;font-size:13px;background:#ecfdf3;border:1px solid #abefc6;color:#05603a}
+.actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:18px}.right-actions{display:flex;gap:8px;flex-wrap:wrap}button{border:0;border-radius:10px;padding:11px 15px;font-weight:800;cursor:pointer}.btn{background:var(--accent);color:#fff}.btn:hover{background:var(--accent2)}.btn-sec{background:#edf2ef;color:var(--accent2)}.btn-light{background:#f2f4f7;color:#344054}.btn-danger{background:#fff1f0;color:var(--danger)}.btn-sm{padding:8px 10px;font-size:12px}
+.room-card{border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0;background:#fbfcfd}.room-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:14px}.room-title{font-weight:900;font-size:17px}.room-actions{display:flex;gap:6px;flex-wrap:wrap}.room-badge{display:inline-block;background:var(--soft);color:var(--accent2);padding:4px 8px;border-radius:999px;font-size:12px;font-weight:800}
+.summary{position:sticky;top:14px}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#ecfdf3;color:var(--ok);font-size:12px;font-weight:900}.price{font-size:34px;font-weight:900;margin:8px 0}.row{display:flex;justify-content:space-between;gap:18px;padding:8px 0;border-bottom:1px dashed #e5e7eb;font-size:14px}.row:last-child{border-bottom:0}.total{font-size:18px;font-weight:900;padding-top:12px}.muted{color:var(--muted)}.mini{font-size:12px}.validation{display:none;margin-bottom:14px;padding:12px;border:1px solid #fecdca;background:#fef3f2;color:#b42318;border-radius:10px;font-size:13px}.validation.show{display:block}
+.customer-data{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.data-item{background:#f8fafb;border:1px solid var(--line);padding:10px;border-radius:10px}.data-item b{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}.quote-title{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.quote-rooms{margin-top:10px}.quote-room{border-top:1px solid var(--line);padding:10px 0}.hide{display:none!important}
+@media(max-width:960px){.layout{grid-template-columns:1fr}.summary{position:static}.steps{grid-template-columns:1fr 1fr 1fr}.steps .step:nth-child(4),.steps .step:nth-child(5){grid-column:auto}}
+@media(max-width:680px){.wrap{padding:12px}.hero{padding:20px}.grid,.grid3,.checks,.customer-data{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.quote-title{display:block}.room-head{align-items:flex-start;flex-direction:column}}
+@media print{body{background:#fff}.hero,.no-print,aside,.section:not(#step5){display:none!important}#step5{display:block!important}.layout{display:block}.card{box-shadow:none;border:0;padding:0}.quote-actions{display:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+<h1>Gulvsliping – Tilbudskalkulator</h1>
+<p>For parkett og tregulv. Kunden beskriver jobben, fagpersonen kontrollerer opplysningene og kalkulatoren lager et strukturert pristilbud.</p>
+<div class="steps no-print" id="stepBar">
+<div class="step active" data-step="1">1. Kunde</div><div class="step" data-step="2">2. Rom og gulv</div><div class="step" data-step="3">3. Tilvalg</div><div class="step" data-step="4">4. Fagperson</div><div class="step" data-step="5">5. Tilbud</div>
+</div>
+</header>
+<div class="layout"><main>
+<div id="validation" class="validation"></div>
+<section class="section active" id="step1"><div class="card">
+<h2>1. Kunde og prosjekt</h2><p class="lead">Start med kontaktopplysninger og hvor arbeidet skal utføres.</p>
+<div class="grid">
+<div><label class="req">Navn</label><input id="customerName" placeholder="Kundens navn"></div>
+<div><label class="req">Telefon</label><input id="phone" placeholder="+47 ..."></div>
+<div><label>E-post</label><input id="email" type="email" placeholder="navn@epost.no"></div>
+<div><label class="req">Adresse / poststed</label><input id="address" placeholder="Prosjektadresse"></div>
+<div><label>Ønsket oppstart</label><input id="startDate" type="date"></div>
+<div><label>Boligtype</label><select id="propertyType"><option>Leilighet</option><option>Enebolig</option><option>Rekkehus</option><option>Hytte</option><option>Næringslokale</option><option>Annet</option></select></div>
+</div>
+<h3>Praktiske forhold</h3><div class="checks">
+<div class="check"><input id="occupied" type="checkbox"><label for="occupied">Boligen er bebodd under arbeidet</label></div>
+<div class="check"><input id="elevator" type="checkbox"><label for="elevator">Heis er tilgjengelig</label></div>
+<div class="check"><input id="parkingDifficult" type="checkbox"><label for="parkingDifficult">Begrenset / vanskelig parkering</label></div>
+<div class="check"><input id="accessDifficult" type="checkbox"><label for="accessDifficult">Vanskelig adkomst / mange etasjer</label></div>
+</div>
+<div class="actions"><span></span><button class="btn" type="button" onclick="nextStep(1)">Neste: Rom og gulv →</button></div>
+</div></section>
+
+<section class="section" id="step2"><div class="card">
+<h2>2. Rom og gulv</h2><p class="lead">Legg inn hvert rom separat. Da kan ulike gulvtyper, skader og behandlinger prises riktig.</p>
+<div id="roomsContainer"></div>
+<button class="btn-sec no-print" type="button" onclick="addRoom()">+ Legg til rom</button>
+<div class="actions"><button class="btn-light" type="button" onclick="goToStep(1)">← Tilbake</button><button class="btn" type="button" onclick="nextStep(2)">Neste: Tilvalg →</button></div>
+</div></section>
+
+<section class="section" id="step3"><div class="card">
+<h2>3. Tilleggstjenester og praktiske forhold</h2><p class="lead">Velg bare det som gjelder for hele oppdraget. Romspesifikke valg ligger under hvert rom.</p>
+<div class="checks">
+<div class="check"><input id="furniture" type="checkbox"><label for="furniture">Flytting av møbler</label></div>
+<div class="check"><input id="baseboards" type="checkbox"><label for="baseboards">Demontering / montering av gulvlister</label></div>
+<div class="check"><input id="thresholds" type="checkbox"><label for="thresholds">Sliping / behandling av terskler</label></div>
+<div class="check"><input id="stairs" type="checkbox"><label for="stairs">Trapp / trinn skal slipes</label></div>
+<div class="check"><input id="radiators" type="checkbox"><label for="radiators">Vanskelig tilgang under radiatorer</label></div>
+<div class="check"><input id="dustProtection" type="checkbox"><label for="dustProtection">Ekstra støvbeskyttelse / tildekking</label></div>
+<div class="check"><input id="waste" type="checkbox"><label for="waste">Bortkjøring av avfall</label></div>
+<div class="check"><input id="urgent" type="checkbox"><label for="urgent">Hasteoppdrag / kort frist</label></div>
+</div>
+<div class="grid" style="margin-top:14px"><div><label>Antall terskler</label><input id="thresholdCount" type="number" min="0" step="1" value="0"></div><div><label>Antall trappetrinn</label><input id="stairCount" type="number" min="0" step="1" value="0"></div></div>
+<div style="margin-top:14px"><label>Kommentar / spesielle ønsker</label><textarea id="notes" placeholder="F.eks. ønsket fargetone, spesielle skader, tidsbegrensning eller annet fagpersonen bør vite."></textarea></div>
+<div class="actions"><button class="btn-light" type="button" onclick="goToStep(2)">← Tilbake</button><button class="btn" type="button" onclick="nextStep(3)">Neste: Faglig kontroll →</button></div>
+</div></section>
+
+<section class="section" id="step4"><div class="card">
+<h2>4. Fagperson – kontroll og pris</h2><p class="lead">Kundens opplysninger vises først. Deretter kan fagpersonen justere prisparametere etter bilder eller befaring.</p>
+<h3>Oppgitt av kunde</h3><div id="customerSnapshot" class="customer-data"></div>
+<div class="divider"></div>
+<h3>Prisparametere</h3><div class="grid3">
+<div><label>Sliping – grunnpris NOK/m²</label><input id="pSand" type="number" min="0" value="290"></div>
+<div><label>Lakk NOK/m²</label><input id="pLacquer" type="number" min="0" value="150"></div>
+<div><label>Olje NOK/m²</label><input id="pOil" type="number" min="0" value="170"></div>
+<div><label>Hardvoksolje NOK/m²</label><input id="pHardwax" type="number" min="0" value="195"></div>
+<div><label>Såpebehandling NOK/m²</label><input id="pSoap" type="number" min="0" value="135"></div>
+<div><label>Pigment / beis NOK/m²</label><input id="pPigment" type="number" min="0" value="55"></div>
+<div><label>Fugesparkling NOK/m²</label><input id="pGaps" type="number" min="0" value="85"></div>
+<div><label>Ekstra grovsliping NOK/m²</label><input id="pHeavy" type="number" min="0" value="55"></div>
+<div><label>Fjerning av maling/lim NOK/m²</label><input id="pCoatingRemoval" type="number" min="0" value="95"></div>
+<div><label>Lokale reparasjoner NOK/time</label><input id="pRepairHour" type="number" min="0" value="750"></div>
+<div><label>Møbler NOK</label><input id="pFurniture" type="number" min="0" value="1200"></div>
+<div><label>Lister NOK</label><input id="pBaseboards" type="number" min="0" value="950"></div>
+<div><label>Terskel NOK/stk</label><input id="pThreshold" type="number" min="0" value="350"></div>
+<div><label>Trappetrinn NOK/stk</label><input id="pStair" type="number" min="0" value="650"></div>
+<div><label>Ekstra tildekking NOK</label><input id="pDust" type="number" min="0" value="650"></div>
+<div><label>Transport / oppstart NOK</label><input id="pTravel" type="number" min="0" value="750"></div>
+<div><label>Minimumspris eks. mva. NOK</label><input id="minimum" type="number" min="0" value="5500"></div>
+<div><label>MVA %</label><input id="vat" type="number" min="0" max="100" value="25"></div>
+<div><label>Rabatt %</label><input id="discount" type="number" min="0" max="100" value="0"></div>
+<div><label>Manuell prisjustering NOK</label><input id="manualAdjust" type="number" value="0"></div>
+<div><label>Tilbudsnummer</label><input id="quoteNo" placeholder="F.eks. 2026-001"></div>
+<div><label>Tilbud gyldig i dager</label><input id="validDays" type="number" min="1" value="14"></div>
+</div>
+<h3>Faglig vurdering</h3><div class="grid"><div><label>Oppdragets kompleksitet</label><select id="proAssessment"><option value="standard">Standard jobb</option><option value="extra">Ekstra krevende</option><option value="repair">Omfattende reparasjon / underarbeid</option></select></div><div><label>Estimert reparasjonstid (timer)</label><input id="repairHours" type="number" min="0" step="0.5" value="0"></div></div>
+<div class="notice" style="margin-top:14px">Standardprisene er eksempler. Fagpersonen må legge inn egne priser før kalkulatoren brukes kommersielt.</div>
+<div class="actions"><button class="btn-light" type="button" onclick="goToStep(3)">← Tilbake</button><button class="btn" type="button" onclick="nextStep(4)">Generer tilbud →</button></div>
+</div></section>
+
+<section class="section" id="step5"><div class="card">
+<div class="quote-title"><div><h2>Tilbud – gulvsliping</h2><p class="lead" style="margin-bottom:0">Sliping og overflatebehandling av parkett / tregulv</p></div><div><b>Tilbudsnummer:</b> <span id="qNo">–</span><br><span class="muted mini" id="qValidity"></span></div></div>
+<div class="divider"></div><div class="grid"><div><span class="muted mini">KUNDE</span><br><strong id="qName">–</strong><br><span id="qContact" class="muted"></span></div><div><span class="muted mini">PROSJEKTADRESSE</span><br><strong id="qAddress">–</strong></div></div>
+<h3>Arbeidsomfang</h3><div id="quoteRooms" class="quote-rooms"></div>
+<h3>Pris</h3><div id="quoteLines"></div>
+<div class="divider"></div><div class="okbox"><strong>Inkludert:</strong> profesjonell gulvsliping, valgt overflatebehandling og de tilleggstjenestene som er spesifisert i tilbudet.</div>
+<p class="mini muted" style="margin-top:14px"><strong>Forbehold:</strong> Endelig pris forutsetter at gulvets slipesjikt, konstruksjon og skadeomfang samsvarer med opplysningene. Skjulte skader, fukt, limrester, svært tynne slipesjikt, tidligere feilsliping eller behov for utskifting av bord kan medføre tillegg etter avtale.</p>
+<div class="actions quote-actions no-print"><button class="btn-light" type="button" onclick="goToStep(4)">← Tilbake til fagperson</button><div class="right-actions"><button class="btn-sec" type="button" onclick="window.print()">Skriv ut / PDF</button><button class="btn-light" type="button" onclick="resetCalc()">Nullstill</button></div></div>
+</div></section>
+</main>
+<aside><section class="card summary"><span class="pill">Løpende prisestimat</span><h2 style="margin-top:10px">Prisoversikt</h2><div class="price" id="grandTotal">0 kr</div><div class="help">inkl. mva.</div><div class="divider"></div><div id="summaryRows"></div><div class="notice" style="margin-top:14px">Kunden får et estimat. Endelig tilbud opprettes etter faglig kontroll.</div></section></aside>
+</div></div>
+<script>
+let currentStep=1;let roomCounter=0;
+const $=id=>document.getElementById(id);const num=id=>Number($(id)?.value||0);const chk=id=>!!$(id)?.checked;const money=v=>new Intl.NumberFormat('nb-NO',{style:'currency',currency:'NOK',maximumFractionDigits:0}).format(Number(v)||0);
+const floorLabels={parkett:'Parkett',heltre:'Heltregulv / plank',fiskeben:'Fiskebensparkett',mosaikk:'Mosaikkparkett',lamell:'Lamellparkett',ukjent:'Ukjent gulvtype'};
+const finishLabels={lacquer:'Lakk',oil:'Olje',hardwax:'Hardvoksolje',soap:'Såpebehandling',none:'Kun sliping'};
+const toneLabels={natural:'Naturlig / transparent',white:'Hvitpigmentert',grey:'Gråpigmentert',dark:'Mørk / røkt',custom:'Spesialfarge / prøve'};
+function roomTemplate(id,data={}){return `<div class="room-card" data-room="${id}"><div class="room-head"><div><span class="room-badge">Rom ${id}</span> <span class="room-title">${data.name||'Nytt rom'}</span></div><div class="room-actions no-print"><button class="btn-light btn-sm" type="button" onclick="copyRoom(${id})">Kopier</button><button class="btn-danger btn-sm" type="button" onclick="deleteRoom(${id})">Slett</button></div></div>
+<div class="grid3"><div><label class="req">Romnavn</label><input class="r-name" value="${data.name||''}" placeholder="F.eks. Stue"></div><div><label class="req">Areal (m²)</label><input class="r-area" type="number" min="1" step="0.1" value="${data.area||''}" placeholder="30"></div><div><label>Gulvtype</label><select class="r-floor"><option value="parkett">Parkett</option><option value="heltre">Heltregulv / plank</option><option value="fiskeben">Fiskebensparkett</option><option value="mosaikk">Mosaikkparkett</option><option value="lamell">Lamellparkett</option><option value="ukjent">Vet ikke</option></select></div><div><label>Treslag</label><select class="r-wood"><option>Eik</option><option>Ask</option><option>Furu</option><option>Gran</option><option>Bøk</option><option>Bjørk</option><option>Valnøtt</option><option>Annet / ukjent</option></select></div><div><label>Gulvets alder</label><select class="r-age"><option value="new">Under 10 år</option><option value="mid">10–30 år</option><option value="old">Over 30 år</option><option value="unknown">Ukjent</option></select></div><div><label>Tilstand</label><select class="r-condition"><option value="light">Lett slitt</option><option value="normal" selected>Normalt slitt</option><option value="heavy">Kraftig slitt</option><option value="veryheavy">Svært slitt / skadet</option></select></div></div>
+<h3>Tilstand og nødvendig underarbeid</h3><div class="checks"><div class="check"><input class="r-oldFinish" type="checkbox"><label>Gammel lakk / olje</label></div><div class="check"><input class="r-paint" type="checkbox"><label>Maling / hardt belegg / limrester</label></div><div class="check"><input class="r-uneven" type="checkbox"><label>Ujevnt gulv / nivåforskjeller</label></div><div class="check"><input class="r-scratches" type="checkbox"><label>Dype riper / merker</label></div><div class="check"><input class="r-black" type="checkbox"><label>Mørke flekker / vannskader</label></div><div class="check"><input class="r-gaps" type="checkbox"><label>Sprekker / åpne fuger</label></div><div class="check"><input class="r-loose" type="checkbox"><label>Løse bord / parkettstaver</label></div><div class="check"><input class="r-nails" type="checkbox"><label>Synlige spiker / skruer</label></div></div>
+<h3>Ønsket behandling</h3><div class="grid3"><div><label>Overflatebehandling</label><select class="r-finish"><option value="lacquer">Lakk</option><option value="oil">Olje</option><option value="hardwax">Hardvoksolje</option><option value="soap">Såpebehandling</option><option value="none">Kun sliping</option></select></div><div><label>Glans</label><select class="r-sheen"><option>Ultramatt</option><option selected>Matt</option><option>Silkematt</option><option>Halvblank</option><option>Ikke valgt</option></select></div><div><label>Fargetone</label><select class="r-tone"><option value="natural">Naturlig / transparent</option><option value="white">Hvitpigmentert</option><option value="grey">Gråpigmentert</option><option value="dark">Mørk / røkt</option><option value="custom">Spesialfarge / prøve</option></select></div><div><label>Antall strøk</label><select class="r-coats"><option value="2">2 strøk</option><option value="3" selected>3 strøk</option><option value="4">4 strøk / ekstra slitestyrke</option></select></div></div></div>`}
+function addRoom(data={}){roomCounter++;$('roomsContainer').insertAdjacentHTML('beforeend',roomTemplate(roomCounter,data));const card=document.querySelector(`[data-room="${roomCounter}"]`);if(data.floor)card.querySelector('.r-floor').value=data.floor;if(data.wood)card.querySelector('.r-wood').value=data.wood;if(data.age)card.querySelector('.r-age').value=data.age;if(data.condition)card.querySelector('.r-condition').value=data.condition;if(data.finish)card.querySelector('.r-finish').value=data.finish;if(data.sheen)card.querySelector('.r-sheen').value=data.sheen;if(data.tone)card.querySelector('.r-tone').value=data.tone;if(data.coats)card.querySelector('.r-coats').value=data.coats;['oldFinish','paint','uneven','scratches','black','gaps','loose','nails'].forEach(k=>{if(data[k])card.querySelector('.r-'+k).checked=true});bindDynamic(card);calculate()}
+function bindDynamic(root){root.querySelectorAll('input,select,textarea').forEach(el=>{el.addEventListener('input',()=>{const n=root.querySelector('.r-name').value||'Nytt rom';root.querySelector('.room-title').textContent=n;calculate()});el.addEventListener('change',calculate)})}
+function getRooms(){return [...document.querySelectorAll('.room-card')].map(card=>({id:Number(card.dataset.room),name:card.querySelector('.r-name').value.trim(),area:Number(card.querySelector('.r-area').value||0),floor:card.querySelector('.r-floor').value,wood:card.querySelector('.r-wood').value,age:card.querySelector('.r-age').value,condition:card.querySelector('.r-condition').value,oldFinish:card.querySelector('.r-oldFinish').checked,paint:card.querySelector('.r-paint').checked,uneven:card.querySelector('.r-uneven').checked,scratches:card.querySelector('.r-scratches').checked,black:card.querySelector('.r-black').checked,gaps:card.querySelector('.r-gaps').checked,loose:card.querySelector('.r-loose').checked,nails:card.querySelector('.r-nails').checked,finish:card.querySelector('.r-finish').value,sheen:card.querySelector('.r-sheen').value,tone:card.querySelector('.r-tone').value,coats:Number(card.querySelector('.r-coats').value||3)}))}
+function copyRoom(id){const r=getRooms().find(x=>x.id===id);if(r)addRoom({...r,name:(r.name||'Rom')+' – kopi'})}function deleteRoom(id){if(getRooms().length<=1){alert('Du må ha minst ett rom.');return}document.querySelector(`[data-room="${id}"]`)?.remove();calculate()}
+function validateStep(step){let errors=[];if(step===1){if(!$('customerName').value.trim())errors.push('Navn må fylles ut.');if(!$('phone').value.trim())errors.push('Telefon må fylles ut.');if(!$('address').value.trim())errors.push('Adresse / poststed må fylles ut.');if($('email').value && !$('email').checkValidity())errors.push('E-postadressen er ikke gyldig.')}if(step===2){const rooms=getRooms();if(!rooms.length)errors.push('Legg til minst ett rom.');rooms.forEach((r,i)=>{if(!r.name)errors.push(`Rom ${i+1}: romnavn mangler.`);if(!(r.area>0))errors.push(`Rom ${i+1}: areal må være større enn 0 m².`)})}if(step===4){if(num('vat')<0||num('vat')>100)errors.push('MVA må være mellom 0 og 100 %.');if(num('discount')<0||num('discount')>100)errors.push('Rabatt må være mellom 0 og 100 %.')}showValidation(errors);return errors.length===0}
+function showValidation(errors){const box=$('validation');if(!errors.length){box.classList.remove('show');box.innerHTML='';return}box.innerHTML='<strong>Kontroller følgende:</strong><br>'+errors.map(e=>'• '+e).join('<br>');box.classList.add('show');box.scrollIntoView({behavior:'smooth',block:'center'})}
+function goToStep(n){currentStep=n;document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));$('step'+n).classList.add('active');document.querySelectorAll('.step').forEach(s=>s.classList.toggle('active',Number(s.dataset.step)===n));showValidation([]);if(n===4)renderCustomerSnapshot();if(n===5)renderQuote();window.scrollTo({top:0,behavior:'smooth'})}
+function nextStep(from){if(!validateStep(from))return;goToStep(from+1)}
+function roomPrice(r){let sand=r.area*num('pSand');if(r.floor==='fiskeben')sand*=1.18;if(r.floor==='mosaikk')sand*=1.12;if(r.floor==='heltre')sand*=1.06;if(r.condition==='heavy')sand+=r.area*num('pHeavy');if(r.condition==='veryheavy')sand+=r.area*num('pHeavy')*1.8;if(r.uneven)sand+=r.area*70;if(r.scratches)sand+=r.area*35;if(r.nails)sand+=250;if(r.paint)sand+=r.area*num('pCoatingRemoval');let finish=0;if(r.finish==='lacquer')finish=r.area*num('pLacquer');if(r.finish==='oil')finish=r.area*num('pOil');if(r.finish==='hardwax')finish=r.area*num('pHardwax');if(r.finish==='soap')finish=r.area*num('pSoap');if(r.finish!=='none'&&r.coats===4)finish+=r.area*45;if(r.finish!=='none'&&r.coats===2)finish=Math.max(0,finish-r.area*25);let pigment=r.tone!=='natural'&&r.finish!=='none'?r.area*num('pPigment'):0;let repairs=0;if(r.gaps)repairs+=r.area*num('pGaps');if(r.black)repairs+=350;if(r.loose)repairs+=650;return{sand,finish,pigment,repairs,total:sand+finish+pigment+repairs}}
+function calculate(){const rooms=getRooms();let sand=0,finish=0,pigment=0,repairs=0;rooms.forEach(r=>{const p=roomPrice(r);sand+=p.sand;finish+=p.finish;pigment+=p.pigment;repairs+=p.repairs});repairs+=num('repairHours')*num('pRepairHour');if($('proAssessment')?.value==='extra')repairs+=rooms.reduce((s,r)=>s+r.area,0)*35;if($('proAssessment')?.value==='repair')repairs+=rooms.reduce((s,r)=>s+r.area,0)*75;let extras=0;if(chk('furniture'))extras+=num('pFurniture');if(chk('baseboards'))extras+=num('pBaseboards');if(chk('thresholds'))extras+=num('thresholdCount')*num('pThreshold');if(chk('stairs'))extras+=num('stairCount')*num('pStair');if(chk('radiators'))extras+=450;if(chk('dustProtection'))extras+=num('pDust');if(chk('waste'))extras+=450;if(chk('urgent'))extras+=900;if(chk('parkingDifficult'))extras+=250;if(chk('accessDifficult'))extras+=450;const travel=num('pTravel');let subtotal=sand+finish+pigment+repairs+extras+travel+num('manualAdjust');subtotal=Math.max(subtotal,num('minimum'));const discount=subtotal*(num('discount')/100);const after=subtotal-discount;const vat=after*(num('vat')/100);const total=after+vat;$('grandTotal').textContent=money(total);$('summaryRows').innerHTML=`<div class="row"><span>Sliping</span><strong>${money(sand)}</strong></div><div class="row"><span>Overflatebehandling</span><strong>${money(finish+pigment)}</strong></div><div class="row"><span>Reparasjon / underarbeid</span><strong>${money(repairs)}</strong></div><div class="row"><span>Tilleggstjenester</span><strong>${money(extras)}</strong></div><div class="row"><span>Transport / oppstart</span><strong>${money(travel)}</strong></div>${discount>0?`<div class="row"><span>Rabatt</span><strong>− ${money(discount)}</strong></div>`:''}<div class="row"><span>MVA</span><strong>${money(vat)}</strong></div><div class="row total"><span>Totalt</span><strong>${money(total)}</strong></div>`;return{rooms,sand,finish,pigment,repairs,extras,travel,subtotal,discount,vat,total}}
+function renderCustomerSnapshot(){const rooms=getRooms();const area=rooms.reduce((s,r)=>s+r.area,0);$('customerSnapshot').innerHTML=`<div class="data-item"><b>Kunde</b>${$('customerName').value||'–'}</div><div class="data-item"><b>Telefon</b>${$('phone').value||'–'}</div><div class="data-item"><b>Adresse</b>${$('address').value||'–'}</div><div class="data-item"><b>Rom / totalareal</b>${rooms.length} rom / ${area.toFixed(1)} m²</div><div class="data-item"><b>Tillegg</b>${[chk('furniture')?'møbler':'',chk('stairs')?'trapp':'',chk('thresholds')?'terskler':'',chk('dustProtection')?'ekstra tildekking':''].filter(Boolean).join(', ')||'Ingen valgt'}</div><div class="data-item"><b>Kundekommentar</b>${$('notes').value||'Ingen kommentar'}</div>`}
+function renderQuote(){const c=calculate();$('qName').textContent=$('customerName').value||'–';$('qContact').textContent=[$('phone').value,$('email').value].filter(Boolean).join(' · ');$('qAddress').textContent=$('address').value||'–';$('qNo').textContent=$('quoteNo').value||'–';$('qValidity').textContent=`Gyldig i ${num('validDays')||14} dager`;$('quoteRooms').innerHTML=c.rooms.map(r=>{const p=roomPrice(r);return `<div class="quote-room"><strong>${r.name}</strong> – ${r.area.toFixed(1)} m²<br><span class="muted mini">${floorLabels[r.floor]}, ${r.wood}. ${finishLabels[r.finish]}${r.finish!=='none'?`, ${r.sheen}, ${toneLabels[r.tone]}, ${r.coats} strøk`:''}.</span><span style="float:right"><strong>${money(p.total)}</strong></span></div>`}).join('');$('quoteLines').innerHTML=`<div class="row"><span>Sliping</span><strong>${money(c.sand)}</strong></div><div class="row"><span>Overflatebehandling</span><strong>${money(c.finish+c.pigment)}</strong></div><div class="row"><span>Reparasjon / underarbeid</span><strong>${money(c.repairs)}</strong></div><div class="row"><span>Tilleggstjenester</span><strong>${money(c.extras)}</strong></div><div class="row"><span>Transport / oppstart</span><strong>${money(c.travel)}</strong></div>${c.discount>0?`<div class="row"><span>Rabatt</span><strong>− ${money(c.discount)}</strong></div>`:''}<div class="row"><span>MVA ${num('vat')} %</span><strong>${money(c.vat)}</strong></div><div class="row total"><span>Tilbudssum inkl. mva.</span><strong>${money(c.total)}</strong></div>`}
+function resetCalc(){if(confirm('Vil du nullstille hele kalkulatoren?'))location.reload()}
+['customerName','phone','email','address','startDate','propertyType','occupied','elevator','parkingDifficult','accessDifficult','furniture','baseboards','thresholds','stairs','radiators','dustProtection','waste','urgent','thresholdCount','stairCount','notes','pSand','pLacquer','pOil','pHardwax','pSoap','pPigment','pGaps','pHeavy','pCoatingRemoval','pRepairHour','pFurniture','pBaseboards','pThreshold','pStair','pDust','pTravel','minimum','vat','discount','manualAdjust','quoteNo','validDays','proAssessment','repairHours'].forEach(id=>{const el=$(id);if(el){el.addEventListener('input',calculate);el.addEventListener('change',calculate)}});
+addRoom({name:'Stue',area:30});calculate();
+</script>
+</body>
+</html>
